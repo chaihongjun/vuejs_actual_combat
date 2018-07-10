@@ -1,0 +1,43 @@
+<!-- /*
+* @Author: chaihongjun
+* @FileName:v-model.html
+* @Date:   2017-12-28 21:01:10
+* @Last Modified by:   chaihongjun
+* @Last Modified time: 2017-12-28 21:01:10
+*/ -->
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <title>v-model 双向数据绑定 单选按钮绑定动态数据</title>
+    <style>
+    [v-cloak] {
+        display: none
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <input type="raido" v-model="picked" :value="value">
+        <label>单选</label>
+        <p v-cloak>{{picked}}</p>
+        <p v-cloak>{{value}}</p>
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            picked: false,
+            value: 123
+        }
+    })
+    </script>
+</body>
+
+</html>
