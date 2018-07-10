@@ -1,0 +1,52 @@
+<!--
+* @Author: chj
+* @FileName:chapter3.demo2.html
+* @Date:   2018-07-06 14:10:26
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-06 14:49:05
+-->
+<!DOCTYPE html>
+<html lang="cmn-hans">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <!--必选  for PC -->
+    <meta name=applicable-device content="pc">
+    <title>Vue 计算属性用法</title>
+    <style>
+    [v-cloak] {
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        姓名：{{fullName}}
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            firstName:"Jack",
+            lastName:"Ma"
+        },
+        computed: {
+                fullName:{
+                        //获取
+                        get:function(){
+                            return this.firstName+" "+this.lastName;
+                        },
+                        set:function(newValue){
+                            var names=newValue.split(" ");
+                            this.firstName=names[0];
+                            this.lastName=names[names.length-1];
+                        }
+                }
+        }
+    })
+    </script>
+</body>
+</html>

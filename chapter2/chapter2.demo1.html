@@ -1,0 +1,42 @@
+<!--
+* @Author: chj
+* @FileName:chapter2.demo1.html
+* @Date:   2018-07-05 15:23:42
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-05 15:28:55
+-->
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <!--必选  for PC -->
+    <meta name=applicable-device content="pc">
+    <title>Vue 示例:数据绑定</title>
+    <style>
+    [v-cloak] {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="name" placeholder="你的名字">
+        <h1 v-cloak>你好，{{name}}</h1>
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: ''
+        }
+    })
+    </script>
+</body>
+
+</html>

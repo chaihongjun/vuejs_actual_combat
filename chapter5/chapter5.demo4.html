@@ -1,0 +1,86 @@
+<!--
+* @Author: chj
+* @FileName:chapter5.demo4.html
+* @Date:   2018-07-09 11:59:26
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-09 18:03:35
+-->
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <!--必选  for PC -->
+    <meta name=applicable-device content="pc">
+    <link rel="stylesheet" type="text/css"  href="css.css">
+    <title>购物车</title>
+</head>
+
+<body>
+    <div>
+        <p>购物车需求</p>
+        <ol>
+            <li>展示已经加入购物车的商品列表</li>
+            <li>商品列表包含商品名称，商品单价，购买数量和操作能力</li>
+            <li>能够实时显示所购买的总价</li>
+            <li>商品数量可以增加，减少或者直接移除</li>
+        </ol>
+        <p>
+            注意事项:
+        </p>
+        <ol>
+            <li>减少数据</li>
+        </ol>
+    </div>
+    <hr>
+    <!-- 页面挂载点 -->
+    <div id="app" v-cloak>
+        <template v-if="goods.length">
+            <table>
+                <thead>
+                    <tr>
+                        <td>表头</td>
+                        <td>商品名称</td>
+                        <td>商品单价</td>
+                        <td>购买数量</td>
+                        <td>操作</td>
+                        <td>选择 全选<input type="checkbox" @click="selectAll" id="selectAll"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="good,index in goods">
+                        <td>{{good.id}}</td>
+                        <td>{{good.name}}</td>
+                        <td>{{good.price}}</td>
+                        <!-- 数量调整 -->
+                        <td>
+                            <button @click="reduce(index)" :disabled="good.count === 1">-</button>
+                            {{good.count}}
+                            <button @click="add(index)">+</button>
+                        </td>
+                        <!-- 操作 -->
+                        <td>
+                            <button @click="remove(index)">移除</button>
+                        </td>
+                        <td>
+                            <input type="checkbox" @click="select(index,$event)" class="select">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div><p> 全部总价：￥{{totalPrice}}</p>
+
+                    <p>选中总价: ￥{{selectPrice}}</p>
+
+            </div>
+        </template>
+        <div v-else>购物车是空的</div>
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script src="trolley.js"></script>
+</body>
+
+</html>

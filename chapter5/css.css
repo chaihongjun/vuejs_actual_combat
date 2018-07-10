@@ -1,0 +1,19 @@
+/*
+* @Author: chj
+* @FileName:css.css
+* @Date:   2018-07-09 17:00:39
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-09 17:18:42
+*/
+
+table {
+    border: 1px solid #ccc;
+}
+
+thead {
+    background-color: #ddd;
+}
+
+td {
+    border: 1px solid #ccc;
+}
