@@ -3,7 +3,7 @@
 * @FileName:css.css
 * @Date:   2018-07-09 17:00:39
 * @Last Modified by:   chj
-* @Last Modified time: 2018-07-09 17:18:42
+* @Last Modified time: 2018-07-10 17:57:39
 */
 
 table {
@@ -16,4 +16,9 @@ thead {
 
 td {
     border: 1px solid #ccc;
+}
+
+d
+[v-cloak] {
+    display: none
 }

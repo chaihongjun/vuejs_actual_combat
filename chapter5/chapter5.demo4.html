@@ -3,7 +3,7 @@
 * @FileName:chapter5.demo4.html
 * @Date:   2018-07-09 11:59:26
 * @Last Modified by:   chj
-* @Last Modified time: 2018-07-09 18:03:35
+* @Last Modified time: 2018-07-10 17:19:34
 -->
 <!DOCTYPE html>
 <html lang="cmn-hans">
@@ -28,12 +28,7 @@
             <li>能够实时显示所购买的总价</li>
             <li>商品数量可以增加，减少或者直接移除</li>
         </ol>
-        <p>
-            注意事项:
-        </p>
-        <ol>
-            <li>减少数据</li>
-        </ol>
+
     </div>
     <hr>
     <!-- 页面挂载点 -->
@@ -47,12 +42,12 @@
                         <td>商品单价</td>
                         <td>购买数量</td>
                         <td>操作</td>
-                        <td>选择 全选<input type="checkbox" @click="selectAll" id="selectAll"></td>
+         <td>全选<input type="checkbox" @click="checkAll" id="checkAll" :checked="isCheckedAll"></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="good,index in goods">
-                        <td>{{good.id}}</td>
+                    <tr v-for="(good,index) in goods">
+                        <td>{{index+1}}</td>
                         <td>{{good.name}}</td>
                         <td>{{good.price}}</td>
                         <!-- 数量调整 -->
@@ -66,20 +61,21 @@
                             <button @click="remove(index)">移除</button>
                         </td>
                         <td>
-                            <input type="checkbox" @click="select(index,$event)" class="select">
+                             <!-- 单选 -->
+                         <input type="checkbox" @click="check(index,$event)" class="check" :checked="good.isChecked">
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div><p> 全部总价：￥{{totalPrice}}</p>
 
-                    <p>选中总价: ￥{{selectPrice}}</p>
+                    <p>选中总价: ￥{{checkedPrice}}</p>
 
             </div>
         </template>
         <div v-else>购物车是空的</div>
     </div>
-    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="trolley.js"></script>
 </body>
 
