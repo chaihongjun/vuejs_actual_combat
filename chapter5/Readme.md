@@ -433,3 +433,5 @@ Vue.config.keyCodes.f1=112;
 ## 购物车
 
 chapter5.demo4.html
+
+https://chaihongjun.github.io/vuejs_actual_combat/chapter5/chapter5.demo4.html
