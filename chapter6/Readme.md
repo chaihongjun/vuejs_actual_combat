@@ -171,10 +171,86 @@
 </script>
 ```
 
+复选框
+
+```
+<div id="app">
+    <input type="checkbox" v-model="toggle" :true-value="value1" :false-value="value2">
+ <label>复选框</label>
+<p>{{toggle}}</p>
+<p>{{value1}}</p>
+<p>{{value2}}</p>     
+</div>
+
+<script>
+    var app=new Vue({
+        el:'#app',
+        data:{
+            toggle:false,
+            value1:'a',
+            value2:b
+        }
+        })
+</script>
+```
 
 
+## 修饰符
+`.lazy` 发生在change事件:
 
+```
+<div id="app">
+    <input type="text" v-model.lazy="message">
+    <p>{{message}}</p>
+</div>
 
+<script>
+    var app=new Vue({
+            el:'#app',
+            data:{
+                message:''
+            }    
+        })
+</script>
+```
+当表单失去焦点或者输入回车之后message才更新
+
+`.number`  将输入转换成Number类型. 一般情况如果输入的是数字，实际是String类型。这个修饰符可以保证类型是Number：
+
+```
+<div id="app">
+    <input type="number" v-model.number="message">
+    <p>{{typeof message}}</p>
+</div>
+
+<script>
+    var app=new Vue({
+        el:'#app',
+        data:{
+            message:123
+        }
+        })
+</script>
+```
+
+`.trim`自动过滤输入的首位空格
+**当失去焦点或者输入回车之后过滤，输入内容中的空格不会被过滤:**
+
+```
+<div id="app">
+    <input type="text" v-model.trim="message">
+    <p>{{typeof message}}</p>
+</div>
+
+<script>
+    var app=new Vue({
+        el:'#app',
+        data:{
+            message:''
+        }
+        })
+</script>
+```
 
 
 

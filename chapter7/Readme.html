@@ -1055,229 +1055,152 @@ body .markdown-body
 .codehilite .vi{color:teal}
 .codehilite .il{color:#009999}
 .codehilite .gc{color:#999;background-color:#EAF2F5}
-</style><title>Readme</title></head><body><article class="markdown-body"><h1 id="v-model">表单和v-model<a class="headerlink" href="#v-model" title="Permanent link"></a></h1>
-<h2 id="_1">基本用法<a class="headerlink" href="#_1" title="Permanent link"></a></h2>
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;text&quot; v-model=&quot;message&quot; placeholder=&quot;输入...&quot;&gt;
-    &lt;p&gt;输入的内容是：{{message}}&lt;/p&gt;
-&lt;/div&gt;
+</style><title>Readme</title></head><body><article class="markdown-body"><h1 id="_1">组件<a class="headerlink" href="#_1" title="Permanent link"></a></h1>
+<h2 id="_2">组件与复用<a class="headerlink" href="#_2" title="Permanent link"></a></h2>
+<h3 id="_3">为什么使用组件<a class="headerlink" href="#_3" title="Permanent link"></a></h3>
+<p>提高代码的重用性（控件，JavaScript能力的复用）</p>
+<p>一个聊天界面的组件:</p>
+<div class="codehilite"><pre>&lt;Card style=&quot;width:350px;&quot;&gt;
+        &lt;p slot=&quot;title&quot;&gt;与XXX聊天中&lt;/p&gt;
+        &lt;a href=&quot;#&quot; slot=&quot;extra&quot;&gt;
+            &lt;Icon type=&quot;android-close&quot; size=&quot;18&quot;&gt;&lt;/Icon&gt;
+        &lt;/a&gt;
+    &lt;div style=&quot;height:100px;&quot;&gt;&lt;/div&gt;  
 
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            message:&#39;&#39;
-        }
-    })
-&lt;/script&gt;
+    &lt;div&gt;
+        &lt;Row :gutter=&quot;16&quot;&gt;
+            &lt;i-col span=&quot;17&quot;&gt;
+                &lt;i-input v-model=&quot;value&quot; placeholder=&quot;请输入...&quot;&gt;&lt;/i-input&gt;
+            &lt;/i-col&gt;
+            &lt;i-col span=&quot;4&quot;&gt;
+                &lt;i-button type=&quot;primary&quot; icon=&quot;paper-airplane&quot;&gt;发送&lt;/i-button&gt;     
+            &lt;/i-col&gt;
+        &lt;/Row&gt;
+&lt;/div&gt;  
+&lt;/Card&gt;
 </pre></div>
 
-<h3 id="_2">单选按钮<a class="headerlink" href="#_2" title="Permanent link"></a></h3>
-<p>只有一个单选按钮的时候，只需要<code>v-bind</code>绑定一个布尔值即可
+<h3 id="_4">组件用法<a class="headerlink" href="#_4" title="Permanent link"></a></h3>
+<p>组件和Vue实例一样需要注册后使用，可以是全局注册也可以说局部注册，全局注册之后，任何Vue实例都可以使用它：</p>
+<p>全局注册
+<div class="codehilite"><pre>Vue.component(&#39;my-component&#39;,{
+    //组件选项
+})
+</pre></div>
+<code>my-component</code> 就是注册的自定义标签名称，要在Vue实例创建之前注册。组件的内容通过<code>&lt;template&gt;</code>选项渲染出来：
 <div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;radio&quot; :checked=&quot;picked&quot;&gt;
-    &lt;label&gt;单选按钮&lt;/label&gt;
-    input
+    &lt;my-component&gt;&lt;/my-component&gt;
 &lt;/div&gt;
-
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            picked:true
-        }
-    })
-&lt;/script&gt;
-</pre></div></p>
-<p>但如果是多个单选按钮组合使用,就需要<code>v-model</code>配合<code>value</code>:</p>
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;radio&quot; v-model=&quot;picked&quot; value=&quot;html&quot; id=&quot;html&quot;&gt;
-&lt;!--&lt;input @input=&quot;picked = $event.target.value&quot; value=&quot;html&quot; id=&quot;html&quot;&gt;--&gt;
-    &lt;label for=&quot;html&quot;&gt;HTML&lt;/label&gt;
-    &lt;br&gt;
-     &lt;input type=&quot;radio&quot; v-model=&quot;picked&quot; value=&quot;js&quot; id=&quot;js&quot;&gt;
-    &lt;label for=&quot;html&quot;&gt;JavaScript&lt;/label&gt;
-    &lt;br&gt;
-     &lt;input type=&quot;radio&quot; v-model=&quot;picked&quot; value=&quot;css&quot; id=&quot;css&quot;&gt;
-    &lt;label for=&quot;html&quot;&gt;CSS&lt;/label&gt;
-    &lt;br&gt;
-    &lt;p&gt;选择的项目是：{{picked}}&lt;/p&gt;
-&lt;/div&gt;
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            picked:&#39;js&#39;
-        }
-    })
+&lt;script&gt; 
+Vue.component(&#39;my-component&#39;,{
+    template:`&lt;div&gt;这个是组件的内容&lt;/div&gt;`
+})
+var app=new Vue({
+    el:&#39;#app&#39;
+})
 &lt;/script&gt;
 </pre></div>
-
-<h3 id="_3">复选框<a class="headerlink" href="#_3" title="Permanent link"></a></h3>
-<p>单个复选框
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;checkbox&quot; v-model=&quot;checked&quot; id=&quot;checked&quot;&gt;
-    &lt;label for=&quot;checked&quot;&gt;选择状态{{checked}}&lt;/label&gt;
-&lt;/div&gt;
-
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            checked:false
-        }
-    })
-&lt;/script&gt;
-</pre></div>
-多个复选框</p>
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;checkbox&quot; v-model=&quot;checked&quot; value=&quot;html&quot; id=&quot;html&quot;&gt;
-    &lt;label for=&quot;html&quot;&gt;HTML&lt;/label&gt;
-    &lt;br&gt;
-        &lt;input type=&quot;checkbox&quot; v-model=&quot;checked&quot; value=&quot;js&quot; id=&quot;js&quot;&gt;
-    &lt;label for=&quot;js&quot;&gt;JavaScript&lt;/label&gt;
-    &lt;br&gt;
-        &lt;input type=&quot;checkbox&quot; v-model=&quot;checked&quot; value=&quot;css&quot; id=&quot;css&quot;&gt;
-    &lt;label for=&quot;css&quot;&gt;CSS&lt;/label&gt;
-    &lt;br&gt;
-   &lt;p&gt;选择的是：{{checked}}&lt;/p&gt; 
-&lt;/div&gt;
-
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            checked:js
-        }
-    })
-&lt;/script&gt;
-</pre></div>
-
-<h3 id="_4">选择列表<a class="headerlink" href="#_4" title="Permanent link"></a></h3>
-<p>单选下拉选择器</p>
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;select v-model=&quot;selected&quot;&gt;
-        &lt;option&gt;HTML&lt;/option&gt;
-        &lt;option value=&quot;js&quot;&gt;JavaScript&lt;/option&gt;
-         &lt;option&gt;CSS&lt;/option&gt;
-    &lt;/select&gt;
- &lt;p&gt;选择的是:{{selected}}&lt;/p&gt;   
-&lt;/div&gt;
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            selected:&#39;html&#39;
-        }
-    })
-&lt;/script&gt;
-</pre></div>
-
-<p>多选下拉选择器
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;select v-model=&quot;selected&quot; multiple&gt;
-        &lt;option&gt;HTML&lt;/option&gt;
-        &lt;option value=&quot;js&quot;&gt;JavaScript&lt;/option&gt;
-         &lt;option&gt;CSS&lt;/option&gt;
-    &lt;/select&gt;
- &lt;p&gt;选择的是:{{selected}}&lt;/p&gt;   
-&lt;/div&gt;
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            selected:&#39;html&#39;
-        }
-    })
-&lt;/script&gt;
-</pre></div></p>
-<h2 id="_5">绑定值<a class="headerlink" href="#_5" title="Permanent link"></a></h2>
-<p>绑定动态数据按钮（使用<code>v-bind</code>）
-单选按钮</p>
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;raido&quot; v-model=&quot;picked&quot; :value=&quot;value&quot;&gt;
-    &lt;label&gt;单选&lt;/label&gt;
-  &lt;p&gt;{{picked}}&lt;/p&gt;
-  &lt;p&gt;{{value}}&lt;/p&gt;
-&lt;/div&gt;
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            picked:false,
-            value:123
-        }
-    })
-&lt;/script&gt;
-</pre></div>
-
-<p>复选框</p>
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;checkbox&quot; v-model=&quot;toggle&quot; :true-value=&quot;value1&quot; :false-value=&quot;value2&quot;&gt;
- &lt;label&gt;复选框&lt;/label&gt;
-&lt;p&gt;{{toggle}}&lt;/p&gt;
-&lt;p&gt;{{value1}}&lt;/p&gt;
-&lt;p&gt;{{value2}}&lt;/p&gt;     
-&lt;/div&gt;
-
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            toggle:false,
-            value1:&#39;a&#39;,
-            value2:b
-        }
-        })
-&lt;/script&gt;
-</pre></div>
-
-<h2 id="_6">修饰符<a class="headerlink" href="#_6" title="Permanent link"></a></h2>
-<p><code>.lazy</code> 发生在change事件:</p>
+局部注册：
+通过vue实例的<code>components</code>选项可以进行局部组件注册，只在对应实例的作用域内有效。在<code>components</code>选项里面还可以再进行组件注册，完成组件嵌套：</p>
 <p><div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;text&quot; v-model.lazy=&quot;message&quot;&gt;
-    &lt;p&gt;{{message}}&lt;/p&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;
 &lt;/div&gt;
-
-&lt;script&gt;
-    var app=new Vue({
-            el:&#39;#app&#39;,
-            data:{
-                message:&#39;&#39;
-            }    
-        })
+&lt;script&gt; 
+var Child ={
+    template:`&lt;div&gt;这个是局部注册的组件内容&lt;/div&gt;`
+}
+var app=new Vue({
+    el:&#39;#app&#39;,
+    components:{
+        &#39;my-component&#39;:Child
+    }
+})
 &lt;/script&gt;
 </pre></div>
-当表单失去焦点或者输入回车之后message才更新</p>
-<p><code>.number</code>  将输入转换成Number类型. 一般情况如果输入的是数字，实际是String类型。这个修饰符可以保证类型是Number：</p>
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;number&quot; v-model.number=&quot;message&quot;&gt;
-    &lt;p&gt;{{typeof message}}&lt;/p&gt;
+Vue组件模板由于受到HTML限制，一些标签内不允许出现其他的标签。比如,<code>&lt;table&gt;</code>里面只能是<code>&lt;tr&gt;</code>,<code>&lt;td&gt;</code>,<code>&lt;th&gt;</code>这些，直接使用组件是无效的:</p>
+<p><div class="codehilite"><pre>&lt;table&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;   &lt;!-- 这样是无效的 --&gt;
+&lt;/table&gt;
+</pre></div>
+必须使用特殊的<code>is</code>属性来挂载：</p>
+<p><div class="codehilite"><pre>&lt;table&gt;
+    &lt;tr is=&quot;my-component&quot;&gt;&lt;/tr&gt;   &lt;!-- 这样是有效的 tr会被渲染为组件内容 --&gt;
+&lt;/table&gt;
+</pre></div>
+组件内的<code>data</code>选项必须是函数，而且最后要把数据<strong>return</strong>出去：</p>
+<p><div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;    
 &lt;/div&gt;
 
 &lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            message:123
+    Vue.component(&#39;my-component&#39;,{
+        template:`&lt;div&gt;{{message}}&lt;/div&gt;`,
+        data:function(){
+            return {
+                message:&#39;组件内容&#39;
+            }
         }
-        })
+    })
+
+    var app=new Vue({
+        el:&#39;#app&#39;
+    })
+&lt;/script&gt;
+</pre></div>
+JavaScript对象是引用关系，所以如果return对象是外部的一个对象，那么这个对象是共享的，任何一方修改都会同步:</p>
+<p><div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;    
+&lt;/div&gt;
+
+&lt;script&gt;
+    //三个组件公用一个外部数据
+    var data={
+        count:0
+    }
+
+    Vue.component(&#39;my-component&#39;,{
+        template:`&lt;button @click=&quot;count++&quot;&gt;{{count}}&lt;/button&gt;`,
+        data:function(){
+            return data
+        }
+    })
+
+    var app=new Vue({
+        el:&#39;#app&#39;
+    })
+&lt;/script&gt;
+</pre></div>
+三个按钮不管点击哪个，数据都是同步更新的。如果想不受影响，就应该在组件内返回新的data：</p>
+<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;
+    &lt;my-component&gt;&lt;/my-component&gt;    
+&lt;/div&gt;
+
+&lt;script&gt;
+    //三个组件公用一个外部数据
+    var data={
+        count:0
+    }
+
+    Vue.component(&#39;my-component&#39;,{
+        template:`&lt;button @click=&quot;count++&quot;&gt;{{count}}&lt;/button&gt;`,
+        data:function(){
+            return {
+                count:0
+            }
+        }
+    })
+
+    var app=new Vue({
+        el:&#39;#app&#39;
+    })
 &lt;/script&gt;
 </pre></div>
 
-<p><code>.trim</code>自动过滤输入的首位空格
-<strong>当失去焦点或者输入回车之后过滤，输入内容中的空格不会被过滤:</strong></p>
-<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
-    &lt;input type=&quot;text&quot; v-model.trim=&quot;message&quot;&gt;
-    &lt;p&gt;{{typeof message}}&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;script&gt;
-    var app=new Vue({
-        el:&#39;#app&#39;,
-        data:{
-            message:&#39;&#39;
-        }
-        })
-&lt;/script&gt;
-</pre></div></article></body></html>
+<h2 id="props">使用props传递数据<a class="headerlink" href="#props" title="Permanent link"></a></h2>
+<h3 id="_5">基本用法<a class="headerlink" href="#_5" title="Permanent link"></a></h3>
+<p>组件之间通信，父组件向子组件传递数据或者参数，子组件接收之后根据参数的不同来渲染不同的内容或执行不同的操作。</p>
+<p>父组件向子组件传递数据过程通过<code>props</code>实现</p></article></body></html>

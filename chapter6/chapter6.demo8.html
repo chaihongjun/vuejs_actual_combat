@@ -1,0 +1,46 @@
+<!--
+* @Author: chj
+* @FileName:chapter6.demo8.html
+* @Date:   2018-07-11 09:24:39
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-11 14:17:10
+-->
+
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <title>v-model 双向数据绑定 复选框绑定动态数据</title>
+    <style>
+    [v-cloak] {
+        display: none
+    }
+    </style>
+</head>
+
+<body>
+<div id="app" v-cloak>
+    <input type="checkbox" v-model="toggle" :true-value="value1" :false-value="value2">
+ <label>复选框</label>
+<p v-cloak>toggle:{{toggle}}</p>
+<p v-cloak>value1:{{value1}}</p>
+<p v-cloak>value2:{{value2}}</p>
+</div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script>
+    var app=new Vue({
+        el:'#app',
+        data:{
+            toggle:false,
+            value1:'a',
+            value2:'b'
+        }
+        })
+</script>
+</body>
+
+</html>
