@@ -3,11 +3,8 @@
 * @FileName:chapter7.demo2.html
 * @Date:   2018-07-11 17:32:48
 * @Last Modified by:   chj
-* @Last Modified time: 2018-07-11 18:00:05
+* @Last Modified time: 2018-07-12 14:04:04
 -->
-
-
-
 <!DOCTYPE html>
 <html lang="cmn-hans">
 
@@ -25,19 +22,34 @@
 </head>
 
 <body>
-<div id="app" v-cloak>
-    <my-component message="来自父组件的数据"></my-component>
-</div>
+    <div id="app" v-cloak>
+        <my-component message="来自父组件的数据"></my-component>
+        <my-component1 waring-text="提示信息"></my-component1>
+
+        <input type="text" v-model="parentMessage">
+        <my-components :message="parentMessage"></my-components>
+    </div>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script>
-    Vue.component('my-component',{
-        props:['message','a'],
-        template:`<div>{{message}}</div>`
+    <script>
+    Vue.component('my-component', {
+        props: ['message', 'a'],
+        template: `<div>{{message}}</div>`
     })
-    var app=new Vue({
-        el:'#app'
+    Vue.component('my-component1', {
+        props: ['waringText'],
+        template: `<div>{{waringText}}</div>`
     })
-</script>
+    Vue.component('my-components', {
+        props: ['message'],
+        template: `<div>{{message}}</div>`
+    })
+    var app = new Vue({
+        el: '#app',
+        data: {
+            parentMessage: '123'
+        }
+    })
+    </script>
 </body>
 
 </html>

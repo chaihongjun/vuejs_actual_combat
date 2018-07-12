@@ -1,0 +1,51 @@
+<!--
+* @Author: chj
+* @FileName:chapter7.demo4.html
+* @Date:   2018-07-12 14:42:36
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-12 15:21:28
+-->
+
+
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <title>组件</title>
+    <style>
+    [v-cloak] {
+        display: none
+    }
+    </style>
+</head>
+
+<body>
+     <div id="app" v-cloak>
+        <my-component :width="100"></my-component>
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script>
+     Vue.component('my-component', {
+        props: ['width'],
+        template: `<div :style="style">{{width}}</div>`,
+        computed:{
+            style:function(){
+                return {
+                    width:this.width+100+'px'
+                }
+            }
+        }
+    })
+
+    var app = new Vue({
+        el: '#app',
+
+    })
+    </script>
+</body>
+
+</html>
