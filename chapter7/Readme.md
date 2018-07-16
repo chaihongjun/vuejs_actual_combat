@@ -419,3 +419,76 @@ Vue.component('my-component',{
     })
     </script>
 ```
+
+### 非父子组件通信
+兄弟组件通信和跨级组件通信
+
+
+
+父链
+
+> this.$parent
+> this.$children
+> 可以分别访问父组件和子组件
+
+
+```
+<div id="app">
+    {{message}}
+    <component-a></component-a>
+</div>
+<script>
+    Vue.component('component-a',{
+        template:`<button @click='handleEvent'>通过父链直接修改数据</button>`,
+        methods:{
+            handleEvent:function(){
+                //访问到父链后，可以做任何操作，比如直接修改数据
+                this.$parent.message='来自组件component-a的内容'
+            }
+        }
+    })
+
+    var app=new Vue({
+        el:'#app',
+        data:{
+            message:''
+        }
+    })
+</script>
+```
+
+子组件索引
+
+使用`$refs`给子组件指定索引名称：
+```
+<div id="app">
+    <button @click="handleRef">通过$ref获取子组件实例</button>
+    <component-a ref="comA"></component-a>
+</div>
+
+<script>
+    Vue.component('component-a',{
+        template:`<div>子组件</div>`,
+        data:function(){
+            return {
+                message:'子组件内容'
+            }
+        }
+    })
+
+    var app=new Vue({
+        el:'#app',
+        methods:{
+           handleRef:function(){
+                //通过$refs访问指定的子组件实例
+            var msg=this.$refs.comA.message;
+            console.log(msg);
+           } 
+        }
+    })
+</script>
+```
+
+
+
+

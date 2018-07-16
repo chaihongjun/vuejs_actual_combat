@@ -1,10 +1,11 @@
 <!--
 * @Author: chj
-* @FileName:chapter7.demo6.html
-* @Date:   2018-07-12 16:20:09
+* @FileName:chapter7.demo7.html
+* @Date:   2018-07-16 11:32:26
 * @Last Modified by:   chj
-* @Last Modified time: 2018-07-14 11:49:41
+* @Last Modified time: 2018-07-16 11:47:13
 -->
+
 <!DOCTYPE html>
 <html lang="cmn-hans">
 <head>
@@ -22,22 +23,17 @@
 <body>
     <div id="app" v-cloak>
         <p>总数：{{total}}</p>
-        <my-component @increase="handleGetTotal" @reduce="handleGetTotal"></my-component>
+        <my-component v-model="total"></my-component>
 
     </div>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script>
      Vue.component('my-component', {
-        // template:`
-        // <div>
-        //     <button @click="handleIncrease">+1</button>
-        //     <button @click="handleReduce">-1</button>
-        //  </div>`,
            template:`
-        <div>
-            <button @click="handleIncrease">+1</button>
-            <button @click="handleReduce">-1</button>
-         </div>`,
+
+            <button @click="handleClick">+1</button>
+
+`,
          data:function(){
             return {
                 counter:0
@@ -45,14 +41,11 @@
          },
 
          methods:{
-            handleIncrease:function(){
+            handleClick:function(){
                 this.counter++;
-                this.$emit('increase',this.counter);
+                this.$emit('input',this.counter);
             },
-            handleReduce:function(){
-                this.counter--;
-                this.$emit('reduce',this.counter);
-            },
+
          }
     })
 
@@ -61,11 +54,7 @@
         data:{
             total:0
         },
-        methods:{
-            handleGetTotal:function(total){
-                    this.total=total;
-            }
-        }
+
 
     })
     </script>

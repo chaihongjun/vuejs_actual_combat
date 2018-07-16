@@ -1,0 +1,51 @@
+<!--
+* @Author: chj
+* @FileName:chapter7.demo9.html
+* @Date:   2018-07-16 17:35:53
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-16 17:37:15
+-->
+
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <title>组件 父链</title>
+    <style>
+    [v-cloak] {
+        display: none
+    }
+    </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    {{message}}
+    <component-a></component-a>
+</div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+    Vue.component('component-a',{
+        template:`<button @click='handleEvent'>通过父链直接修改数据</button>`,
+        methods:{
+            handleEvent:function(){
+                //访问到父链后，可以做任何操作，比如直接修改数据
+                this.$parent.message='来自组件component-a的内容'
+            }
+        }
+    })
+
+    var app=new Vue({
+        el:'#app',
+        data:{
+            message:''
+        }
+    })
+</script>
+</body>
+
+</html>

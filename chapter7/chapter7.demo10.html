@@ -1,0 +1,54 @@
+<!--
+* @Author: chj
+* @FileName:chapter7.demo10.html
+* @Date:   2018-07-16 17:55:25
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-16 17:56:20
+-->
+
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <title>子组件 $refs</title>
+    <style>
+    [v-cloak] {
+        display: none
+    }
+    </style>
+</head>
+
+<body>
+<div id="app" v-cloak>
+    <button @click="handleRef">通过$ref获取子组件实例</button>
+    <component-a ref="comA"></component-a>
+</div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+    Vue.component('component-a',{
+        template:`<div>子组件</div>`,
+        data:function(){
+            return {
+                message:'子组件内容'
+            }
+        }
+    })
+
+    var app=new Vue({
+        el:'#app',
+        methods:{
+           handleRef:function(){
+                //通过$refs访问指定的子组件实例
+            var msg=this.$refs.comA.message;
+            console.log(msg);
+           }
+        }
+    })
+</script>
+</body>
+
+</html>

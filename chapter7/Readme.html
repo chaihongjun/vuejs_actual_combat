@@ -1376,4 +1376,74 @@ JavaScript对象是引用关系，所以如果return对象是外部的一个对�
 <h3 id="_9">自定义事件<a class="headerlink" href="#_9" title="Permanent link"></a></h3>
 <p>当子组件向父组件传递数据的时候用到自定义事件。<code>v-on</code>除了监听DOM事件，还可以用于组件之间的自定义事件。</p>
 <p><strong> 子组件用<code>$emit()</code>触发事件，父组件用<code>$on()</code>来监听子组件的事件 </strong></p>
-<p><strong> 父组件也可以直接在子组件的自定义标签上使用<code>v-on</code>来监听子组件触发的自定义事件 </strong></p></article></body></html>
+<p><strong> 父组件也可以直接在子组件的自定义标签上使用<code>v-on</code>来监听子组件触发的自定义事件 </strong></p>
+<div class="codehilite"><pre>  &lt;div id=&quot;app&quot; v-cloak&gt;
+    &lt;p&gt;总数：{{total}}&lt;/p&gt;
+    &lt;my-component @increase=&quot;handleGetTotal&quot; @reduce=&quot;handleGetTotal&quot;&gt;&lt;/my-component&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+     Vue.component(&#39;my-component&#39;, {
+        template:`\
+        &lt;div&gt;\
+            &lt;button @click=&quot;handleIncrease&quot;&gt;+1&lt;/button&gt;\
+            &lt;button @click=&quot;handleReduce&quot;&gt;-1&lt;/button&gt;\
+         &lt;/div&gt;`,
+         data:function(){
+            return {
+                counter:0
+            }
+         },
+
+         methods:{
+            handleIncrease:function(){
+                this.counter++;
+                this.$emit(&#39;increase&#39;,this.counter);
+            },
+            handleReduce:function(){
+                this.counter--;
+                this.$emit(&#39;reduce&#39;,this.counter);
+            },
+         }
+    })
+
+    var app = new Vue({
+        el: &#39;#app&#39;,
+        data:{
+            total:0
+        },
+        methods:{
+            handleGetTotal:function(total){
+                    this.total=total;
+            }
+        }
+
+    })
+    &lt;/script&gt;
+</pre></div>
+
+<h3 id="_10">非父子组件通信<a class="headerlink" href="#_10" title="Permanent link"></a></h3>
+<p>兄弟组件通信和跨级组件通信</p>
+<p>父链
+<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
+    {{message}}
+    &lt;component-a&gt;&lt;/component-a&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    Vue.component(&#39;component-a&#39;,{
+        template:`&lt;button @click=&#39;handleEvent&#39;&gt;通过父链直接修改数据&lt;/button&gt;`,
+        methods:{
+            handleEvent:function(){
+                //访问到父链后，可以做任何操作，比如直接修改数据
+                this.$parent.message=&#39;来自组件component-a的内容&#39;
+            }
+        }
+    })
+
+    var app=new Vue({
+        el:&#39;#app&#39;,
+        data:{
+            message:&#39;&#39;
+        }
+    })
+&lt;/script&gt;
+</pre></div></p></article></body></html>
