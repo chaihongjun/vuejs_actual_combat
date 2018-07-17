@@ -1,0 +1,60 @@
+<!--
+* @Author: chj
+* @FileName:chapter7.demo13.html
+* @Date:   2018-07-17 16:45:39
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-17 17:57:23
+-->
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <title>具名 slot</title>
+    <style>
+    [v-cloak] {
+        display: none
+    }
+    </style>
+</head>
+
+<body>
+    <p class="strong">具名slot 就是给slot的name属性一个值</p>
+    <p class="strong">然后插值给一个slot属性，这个slot的属性值和slot标签的name值关联</p>
+    <p class="strong">没有name的slot将使用父组件没有slot属性的内容</p>
+    <hr>
+    <div id="app" v-cloak>
+        <child-component>
+             <p>随机内容</p>
+            <h2 slot="header">标题</h2>  <!-- <slot name="header"></slot> -->
+            <p>正文内容</p>
+            <p>更多正文内容</p>
+            <div slot="footer">底部信息</div>   <!-- <slot name="footer"></slot> -->
+        </child-component>
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+    Vue.component('child-component', {
+        template: `
+        <div class="container">
+                <div class="header">
+            <slot name="header"></slot>
+                </div>
+                <div class="main">
+                <slot></slot>
+                </div>
+                <div class="footer">
+                <slot name="footer"></slot>
+                </div>
+        </div>`,
+    })
+    var app = new Vue({
+        el: '#app',
+    })
+    </script>
+</body>
+
+</html>

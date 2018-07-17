@@ -490,5 +490,153 @@ Vue.component('my-component',{
 ```
 
 
+## 使用slot分发内容
 
+常规网站布局：顶部一级导航、顶部二级导航、左侧列表、右侧正文和底部版权信息，如果组件化，结构可能是：
+```
+<app>
+    <menu-main></menu-main>
+    <meni-sub></meni-sub>
+    <div class="container">
+        <menu-left></menu-left>
+        <container></container>
+    </div>
+    <app-footer></app-footer>
+</app>
+```
+###　作用域
 
+```
+<child-component>
+    {{message}}
+</child-component>
+```
+`{{message}}`的作用域是父级，它就是一个slot。子组件模板在子组件作用域内编译，父组件模板在父组件作用域内编译:
+
+```
+<div id="app">
+    <child-component v-show="showChild"></child-component>
+</div>
+<script>
+    Vue.component('child-component',{
+        template:`<div>子组件</div>`,
+    })
+
+    var app=new Vue({
+        el:'#app',
+        data:{
+            showChild:true
+        }
+    })
+</script>
+```
+这里的　showChild　绑定的是父组件的数据
+###　slot用法
+
+单个　slot
+
+```
+    <div id="app" v-cloak>
+        <child-component>
+            <p>这是父组件的分发的内容</p>
+            <p>更多父组件分发的内容</p>
+        </child-component>
+    </div>
+
+    <script>
+    Vue.component('child-component', {
+        template: `<div>
+        <p>如果父组件没有插入内容，我将作为默认内容出现</p>
+        <slot></slot>
+        </div>`,
+    })
+    var app = new Vue({
+        el: '#app',
+    })
+    </script>
+```
+编译结果:
+```
+    <div id="app">
+    <div>
+        <p>如果父组件没有插入内容，我将作为默认内容出现</p>
+        <p>这是父组件的分发的内容</p>
+            <p>更多父组件分发的内容</p>
+        </div>
+    </div>
+
+```
+### 具名slot
+
+```
+  <div id="app" v-cloak>
+        <child-component>
+             <p>随机内容</p>
+            <h2 slot="header">标题</h2>  
+            <p>正文内容</p>
+            <p>更多正文内容</p>
+            <div slot="footer">底部信息</div> 
+        </child-component>
+    </div>
+    <script>
+    Vue.component('child-component', {
+        template: `
+        <div class="container">
+                <div class="header">
+            <slot name="header"></slot>
+                </div>
+                <div class="main">
+                <slot></slot>
+                </div>
+                <div class="footer">
+                <slot name="footer"></slot>
+                </div>
+        </div>`,
+    })
+    var app = new Vue({
+        el: '#app',
+    })
+    </script>
+
+```
+渲染结果:
+
+```
+  <div class="container">
+                <div class="header">
+          <h2 slot="header">标题</h2>  
+                </div>
+                <div class="main">
+                 <p>随机内容</p>
+                <p>正文内容</p>
+                 <p>更多正文内容</p>
+                </div>
+                <div class="footer">
+                <div slot="footer">底部信息</div> 
+                </div>
+        </div>
+
+```
+### 作用域插槽
+作用域插槽是一种特殊的slot,使用的是一个可以复用的模板替换已经渲染的元素：
+```
+<div id="app">
+    <child-component>
+        <template scope="props">
+            <p>来自父组件的内容</p>
+            <p>{{props.msg}}</p>
+        </template>
+    </child-component>
+</div>
+<script>
+    Vue.component('child-component',{
+        template:`<div class="container">
+            <slot msg="来自子组件的内容"></slot>
+                </div>`
+    })
+
+    var app=new Vue({
+        el:'#app'
+    })
+</script>
+```

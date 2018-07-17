@@ -1423,7 +1423,12 @@ JavaScript对象是引用关系，所以如果return对象是外部的一个对�
 
 <h3 id="_10">非父子组件通信<a class="headerlink" href="#_10" title="Permanent link"></a></h3>
 <p>兄弟组件通信和跨级组件通信</p>
-<p>父链
+<p>父链</p>
+<blockquote>
+<p>this.$parent
+this.$children
+可以分别访问父组件和子组件</p>
+</blockquote>
 <div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
     {{message}}
     &lt;component-a&gt;&lt;/component-a&gt;
@@ -1444,6 +1449,169 @@ JavaScript对象是引用关系，所以如果return对象是外部的一个对�
         data:{
             message:&#39;&#39;
         }
+    })
+&lt;/script&gt;
+</pre></div>
+
+<p>子组件索引</p>
+<p>使用<code>$refs</code>给子组件指定索引名称：
+<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
+    &lt;button @click=&quot;handleRef&quot;&gt;通过$ref获取子组件实例&lt;/button&gt;
+    &lt;component-a ref=&quot;comA&quot;&gt;&lt;/component-a&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+    Vue.component(&#39;component-a&#39;,{
+        template:`&lt;div&gt;子组件&lt;/div&gt;`,
+        data:function(){
+            return {
+                message:&#39;子组件内容&#39;
+            }
+        }
+    })
+
+    var app=new Vue({
+        el:&#39;#app&#39;,
+        methods:{
+           handleRef:function(){
+                //通过$refs访问指定的子组件实例
+            var msg=this.$refs.comA.message;
+            console.log(msg);
+           } 
+        }
+    })
+&lt;/script&gt;
+</pre></div></p>
+<h2 id="slot">使用slot分发内容<a class="headerlink" href="#slot" title="Permanent link"></a></h2>
+<p>常规网站布局：顶部一级导航、顶部二级导航、左侧列表、右侧正文和底部版权信息，如果组件化，结构可能是：
+<div class="codehilite"><pre>&lt;app&gt;
+    &lt;menu-main&gt;&lt;/menu-main&gt;
+    &lt;meni-sub&gt;&lt;/meni-sub&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;menu-left&gt;&lt;/menu-left&gt;
+        &lt;container&gt;&lt;/container&gt;
+    &lt;/div&gt;
+    &lt;app-footer&gt;&lt;/app-footer&gt;
+&lt;/app&gt;
+</pre></div></p>
+<h3 id="_11">作用域<a class="headerlink" href="#_11" title="Permanent link"></a></h3>
+<p><div class="codehilite"><pre>&lt;child-component&gt;
+    {{message}}
+&lt;/child-component&gt;
+</pre></div>
+<code>{{message}}</code>的作用域是父级，它就是一个slot。子组件模板在子组件作用域内编译，父组件模板在父组件作用域内编译:</p>
+<p><div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
+    &lt;child-component v-show=&quot;showChild&quot;&gt;&lt;/child-component&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    Vue.component(&#39;child-component&#39;,{
+        template:`&lt;div&gt;子组件&lt;/div&gt;`,
+    })
+
+    var app=new Vue({
+        el:&#39;#app&#39;,
+        data:{
+            showChild:true
+        }
+    })
+&lt;/script&gt;
+</pre></div>
+这里的　showChild　绑定的是父组件的数据</p>
+<h3 id="slot_1">slot用法<a class="headerlink" href="#slot_1" title="Permanent link"></a></h3>
+<p>单个　slot</p>
+<p><div class="codehilite"><pre>    &lt;div id=&quot;app&quot; v-cloak&gt;
+        &lt;child-component&gt;
+            &lt;p&gt;这是父组件的分发的内容&lt;/p&gt;
+            &lt;p&gt;更多父组件分发的内容&lt;/p&gt;
+        &lt;/child-component&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+    Vue.component(&#39;child-component&#39;, {
+        template: `&lt;div&gt;
+        &lt;p&gt;如果父组件没有插入内容，我将作为默认内容出现&lt;/p&gt;
+        &lt;slot&gt;&lt;/slot&gt;
+        &lt;/div&gt;`,
+    })
+    var app = new Vue({
+        el: &#39;#app&#39;,
+    })
+    &lt;/script&gt;
+</pre></div>
+编译结果:
+<div class="codehilite"><pre>    &lt;div id=&quot;app&quot;&gt;
+    &lt;div&gt;
+        &lt;p&gt;如果父组件没有插入内容，我将作为默认内容出现&lt;/p&gt;
+        &lt;p&gt;这是父组件的分发的内容&lt;/p&gt;
+            &lt;p&gt;更多父组件分发的内容&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+</pre></div></p>
+<h3 id="slot_2">具名slot<a class="headerlink" href="#slot_2" title="Permanent link"></a></h3>
+<p><div class="codehilite"><pre>  &lt;div id=&quot;app&quot; v-cloak&gt;
+        &lt;child-component&gt;
+             &lt;p&gt;随机内容&lt;/p&gt;
+            &lt;h2 slot=&quot;header&quot;&gt;标题&lt;/h2&gt;  
+            &lt;p&gt;正文内容&lt;/p&gt;
+            &lt;p&gt;更多正文内容&lt;/p&gt;
+            &lt;div slot=&quot;footer&quot;&gt;底部信息&lt;/div&gt; 
+        &lt;/child-component&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+    Vue.component(&#39;child-component&#39;, {
+        template: `
+        &lt;div class=&quot;container&quot;&gt;
+                &lt;div class=&quot;header&quot;&gt;
+            &lt;slot name=&quot;header&quot;&gt;&lt;/slot&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;main&quot;&gt;
+                &lt;slot&gt;&lt;/slot&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;footer&quot;&gt;
+                &lt;slot name=&quot;footer&quot;&gt;&lt;/slot&gt;
+                &lt;/div&gt;
+        &lt;/div&gt;`,
+    })
+    var app = new Vue({
+        el: &#39;#app&#39;,
+    })
+    &lt;/script&gt;
+</pre></div>
+渲染结果:</p>
+<div class="codehilite"><pre>  &lt;div class=&quot;container&quot;&gt;
+                &lt;div class=&quot;header&quot;&gt;
+          &lt;h2 slot=&quot;header&quot;&gt;标题&lt;/h2&gt;  
+                &lt;/div&gt;
+                &lt;div class=&quot;main&quot;&gt;
+                 &lt;p&gt;随机内容&lt;/p&gt;
+                &lt;p&gt;正文内容&lt;/p&gt;
+                 &lt;p&gt;更多正文内容&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;footer&quot;&gt;
+                &lt;div slot=&quot;footer&quot;&gt;底部信息&lt;/div&gt; 
+                &lt;/div&gt;
+        &lt;/div&gt;
+</pre></div>
+
+<h3 id="_12">作用域插槽<a class="headerlink" href="#_12" title="Permanent link"></a></h3>
+<p>作用域插槽是一种特殊的slot,使用的是一个可以复用的模板替换已经渲染的元素：
+<div class="codehilite"><pre>&lt;div id=&quot;app&quot;&gt;
+    &lt;child-component&gt;
+        &lt;template scope=&quot;props&quot;&gt;
+            &lt;p&gt;来自父组件的内容&lt;/p&gt;
+            &lt;p&gt;{{props.msg}}&lt;/p&gt;
+        &lt;/template&gt;
+    &lt;/child-component&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    Vue.component(&#39;child-component&#39;,{
+        template:`&lt;div class=&quot;container&quot;&gt;
+            &lt;slot msg=&quot;来自子组件的内容&quot;&gt;&lt;/slot&gt;
+                &lt;/div&gt;`
+    })
+
+    var app=new Vue({
+        el:&#39;#app&#39;
     })
 &lt;/script&gt;
 </pre></div></p></article></body></html>
