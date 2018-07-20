@@ -1,0 +1,65 @@
+<!--
+* @Author: chj
+* @FileName:chapter7.demo15.html
+* @Date:   2018-07-19 11:13:38
+* @Last Modified by:   chj
+* @Last Modified time: 2018-07-19 12:03:10
+-->
+<!DOCTYPE html>
+<html lang="cmn-hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <!--PC端必选   强制360浏览器使用webkit渲染 -->
+    <meta name="renderer" content="webkit">
+    <title>插槽 渲染列表</title>
+    <style>
+    [v-cloak] {
+        display: none
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <my-list :books1="books">
+
+            <!-- 作用域插槽也可以是具名的slot -->
+            <template slot="book" scope="props">
+                <li>{{props.bookName}}</li>
+            </template>
+        </my-list>
+    </div>
+
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+    Vue.component('my-list', {
+        props: {
+            books1: {
+                type: Array,
+                defualt: function() {
+                    return [];
+                }
+            }
+        },
+        template: `<ul>
+              <slot name="book" v-for="book in books1" :book-name="book.name">
+                </slot>
+                </ul>
+                `
+    })
+    var app = new Vue({
+        el: '#app',
+        data: {
+            books: [
+                { name: '《Vue.js实战》' },
+                { name: '《JavaScript语言精髓》' },
+                { name: '《JavaScript高级程序设计》' },
+            ]
+        }
+    })
+    </script>
+</body>
+
+</html>

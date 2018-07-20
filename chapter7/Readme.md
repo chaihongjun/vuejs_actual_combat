@@ -625,8 +625,8 @@ Vue.component('my-component',{
         <template scope="props">
             <p>来自父组件的内容</p>
             <p>{{props.msg}}</p>
-        </template>
-    </child-component>
+        </template
+>    </child-component>
 </div>
 <script>
     Vue.component('child-component',{

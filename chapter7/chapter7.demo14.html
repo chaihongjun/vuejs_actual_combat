@@ -3,7 +3,7 @@
 * @FileName:chapter7.demo14.html
 * @Date:   2018-07-17 18:08:28
 * @Last Modified by:   chj
-* @Last Modified time: 2018-07-17 18:09:08
+* @Last Modified time: 2018-07-19 11:13:04
 -->
 
 <!DOCTYPE html>
@@ -26,17 +26,24 @@
 
 <div id="app">
     <child-component>
-        <template scope="props">
+        <template scope="props">     <!-- template 通过 临时的变量 props
+                                        可以访问 子组件slot的数据 -->
             <p>来自父组件的内容</p>
             <p>{{props.msg}}</p>
+
         </template>
     </child-component>
 </div>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!--
+    <slot msg="来自子组件的内容"></slot>
+     数据传输给了slot
+    -->
 <script>
     Vue.component('child-component',{
         template:`<div class="container">
-            <slot msg="来自子组件的内容"></slot>
+                         <slot msg="来自子组件的内容"></slot>
                 </div>`
     })
 
@@ -47,3 +54,4 @@
 </body>
 
 </html>
+
