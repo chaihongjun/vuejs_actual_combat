@@ -640,3 +640,70 @@ Vue.component('my-component',{
     })
 </script>
 ```
+
+## 组件高级用法
+
+###组件递归
+　　组件在模板内递归调用自己：(只要给组件设置`name`选项即可)
+
+```
+<div id="app">
+    <child-component :count="1"></child-component>
+</div>
+<script>
+    Vue.component('child-component',{
+        name:'child-component',
+        props:{
+            count:{
+                type:Number,
+                default:1
+            }
+        },
+        template:`
+                <div class="child">
+                    <child-component :count="count+1" v-if="count<3">
+                    </child-component></div>
+        `
+    })
+    var app=new Vue({
+        el:'#app'
+    })
+</script>
+```
+
+
+###　动态组件
+`<component>`元素用来动态挂载不同的组件，并且通过`is`属性来选择要挂载的组件:
+
+```
+<div id="app">
+    <component :is="currentView"></component>
+    <button @click="handleChangeView('A')">切换到A</button>
+    <button @click="handleChangeView('B')">切换到B</button>
+    <button @click="handleChangeView('C')">切换到C</button>
+</div>
+<script>
+    var app=new Vue({
+        el:'#app',
+        components:{
+            comA:{
+                template:`<div>组件A</div>`
+            },
+                   comB:{
+                template:`<div>组件B</div>`
+            },
+                   comC:{
+                template:`<div>组件C</div>`
+            }
+        },
+        data:{
+            currentView:'comA'
+        },
+        methods:{
+            handleChangeView:function(component){
+                this.currentView='com'+component;
+            }
+        }
+    })
+</script>
+```
