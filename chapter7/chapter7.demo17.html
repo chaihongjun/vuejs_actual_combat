@@ -3,9 +3,8 @@
 * @FileName:chapter7.demo17.html
 * @Date:   2018-07-21 10:39:00
 * @Last Modified by:   chj
-* @Last Modified time: 2018-07-21 11:31:48
+* @Last Modified time: 2018-07-24 17:44:37
 -->
-
 <!DOCTYPE html>
 <html lang="cmn-hans">
 
@@ -23,38 +22,37 @@
 </head>
 
 <body>
-Merge remote-tracking branch 'refs/remotes/origin/master' into dev_chj<div id="app">
-    <component :is="currentView"></component>
-
-    <button @click="handleChangeView('A')">切换到A</button>
-    <button @click="handleChangeView('B')">切换到B</button>
-    <button @click="handleChangeView('C')">切换到C</button>
-</div>
+    <div id="app">
+        <component :is="currentView"></component>
+        <button @click="handleChangeView('A')">切换到A</button>
+        <button @click="handleChangeView('B')">切换到B</button>
+        <button @click="handleChangeView('C')">切换到C</button>
+    </div>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script>
-    var app=new Vue({
-        el:'#app',
-        components:{
-            comA:{
-                template:`<div>组件A</div>`
+    <script>
+    var app = new Vue({
+        el: '#app',
+        components: {
+            comA: {
+                template: `<div>组件A</div>`
             },
-                   comB:{
-                template:`<div>组件B</div>`
+            comB: {
+                template: `<div>组件B</div>`
             },
-                   comC:{
-                template:`<div>组件C</div>`
+            comC: {
+                template: `<div>组件C</div>`
             }
         },
-        data:{
-            currentView:'comA'
+        data: {
+            currentView: 'comA'
         },
-        methods:{
-            handleChangeView:function(component){
-                this.currentView='com'+component;
+        methods: {
+            handleChangeView: function(component) {
+                this.currentView = 'com' + component;
             }
         }
     })
-</script>
+    </script>
 </body>
 
 </html>
